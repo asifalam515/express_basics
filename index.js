@@ -1,17 +1,21 @@
 const express = require("express");
+const handlerFn = require("./handle");
 const app = express();
-const admin = express();
+app.use(express.json());
 
 const port = 3000;
-app.set("view engine", "ejs");
+const adminRoute = express.Router();
+adminRoute.get("/dashboard", (req, res) => {
+  console.log(req.hostname);
+  res.send("we are in admin dashboard");
+});
+app.use("/admin", adminRoute);
+app.get("/user/:id", handlerFn);
+app.post("/user/", (req, res) => {
+  console.log(req.body);
+  res.send("hello from post method");
+});
 
-app
-  .route("/about/mission")
-  .get((req, res) => {
-    res.render("pages/about");
-  })
-  .post()
-  .put();
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
