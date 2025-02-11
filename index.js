@@ -1,19 +1,18 @@
 const express = require("express");
-const handlerFn = require("./handle");
 const app = express();
-app.use(express.json());
-
 const port = 3000;
-const adminRoute = express.Router();
-adminRoute.get("/dashboard", (req, res) => {
-  console.log(req.hostname);
-  res.send("we are in admin dashboard");
-});
-app.use("/admin", adminRoute);
-app.get("/user/:id", handlerFn);
-app.post("/user/", (req, res) => {
-  console.log(req.body);
-  res.send("hello from post method");
+
+const logger = (req, res, next) => {
+  console.log(
+    `${new Date(Date.now).toLocaleString()}-${req.method} -${
+      req.originalUrl
+    }  - ${req.protocol}`
+  );
+  next();
+};
+app.use(logger);
+app.get("/about", (req, res) => {
+  res.send("about route is here");
 });
 
 app.listen(port, () => {
