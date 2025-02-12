@@ -1,18 +1,15 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const multer = require("multer");
+const UPLOADS_FOLDER = "./uploads/";
+const upload = multer({
+  dest: UPLOADS_FOLDER,
+});
 
-const logger = (req, res, next) => {
-  console.log(
-    `${new Date(Date.now).toLocaleString()}-${req.method} -${
-      req.originalUrl
-    }  - ${req.protocol}`
-  );
-  next();
-};
-app.use(logger);
-app.get("/about", (req, res) => {
-  res.send("about route is here");
+// application
+app.post("/", upload.array("avatar", 2), (req, res) => {
+  res.send("Hello world");
 });
 
 app.listen(port, () => {
