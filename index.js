@@ -5,10 +5,13 @@ const multer = require("multer");
 const UPLOADS_FOLDER = "./uploads/";
 const upload = multer({
   dest: UPLOADS_FOLDER,
+  limits: {
+    fileSize: 500000,
+  },
 });
 
 // application
-app.post("/", upload.array("avatar", 2), (req, res) => {
+app.post("/", upload.single("avatar"), (req, res) => {
   res.send("Hello world");
 });
 
